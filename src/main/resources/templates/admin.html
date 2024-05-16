@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/asset/vendor/bootstrap/css/bootstrap.min.css}">
+    <link href="@{/asset/vendor/fonts/circular-std/style.css}" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/asset/libs/css/style.css}">
+    <link rel="stylesheet" th:href="@{/asset/vendor/fonts/fontawesome/css/fontawesome-all.css}">
+    <link rel="stylesheet" th:href="@{/asset/vendor/charts/chartist-bundle/chartist.css}">
+    <link rel="stylesheet" th:href="@{/asset/vendor/charts/morris-bundle/morris.css}">
+    <link rel="stylesheet" th:href="@{/asset/vendor/fonts/material-design-iconic-font/css/materialdesignicons.min.css}">
+    <link rel="stylesheet" th:href="@{/asset/vendor/charts/c3charts/c3.css}">
+    <link rel="stylesheet" th:href="@{/asset/vendor/fonts/flag-icon-css/flag-icon.min.css}">
+    <title>Concept - Bootstrap 4 Admin Dashboard Template</title>
+</head>
+
+<body>
+    <!-- ============================================================== -->
+    <!-- main wrapper -->
+    <!-- ============================================================== -->
+   
+        <!-- ============================================================== -->
+        <!-- navbar -->
+ <div class="dashboard-main-wrapper">
+        <!-- ============================================================== -->
+        <!-- navbar -->
+        <!-- ============================================================== -->
+        <div class="dashboard-header">
+            <nav class="navbar navbar-expand-lg bg-white fixed-top">
+                <a class="navbar-brand" href="#">Concept</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                
+            </nav>
+        </div>
+        <!-- ============================================================== -->
+        <!-- end navbar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- left sidebar -->
+        <!-- ============================================================== -->
+        <div class="nav-left-sidebar sidebar-dark">
+            <div class="menu-list">
+                <nav class="navbar navbar-expand-lg navbar-light">
+                    <a class="d-xl-none d-lg-none" href="#">Dashboard</a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav flex-column">
+                            <li class="nav-divider">
+                                Menu
+                            </li>
+                            <li class="nav-item ">
+                                <a class="nav-link active" th:href="@{/landing}" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1" aria-controls="submenu-1"><i class="fa fa-fw fa-user-circle"></i>Orders <span class="badge badge-success">6</span></a>
+                                <div id="submenu-1" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-2" aria-controls="submenu-1-2">E-Commerce</a>
+                                            <div id="submenu-1-2" class="collapse submenu" style="">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">E Commerce Dashboard</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">Product List</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">Product Single</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">Product Checkout</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Finance</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Sales</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#" data-toggle="collapse" aria-expanded="false" data-target="#submenu-1-1" aria-controls="submenu-1-1">Infulencer</a>
+                                            <div id="submenu-1-1" class="collapse submenu" style="">
+                                                <ul class="nav flex-column">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">Influencer</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">Influencer Finder</a>
+                                                    </li>
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" href="#">Influencer Profile</a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" th:href="@{/landing}" data-toggle="collapse" aria-expanded="false" data-target="#submenu-2" aria-controls="submenu-2"><i class="fa fa-fw fa-rocket"></i>Product</a>
+                                <div id="submenu-2" class="collapse submenu" style="">
+                                    <ul class="nav flex-column">
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Cards <span class="badge badge-secondary">New</span></a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">General</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Carousel</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">List Group</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Typography</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Accordions</a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#">Tabs</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- ============================================================== -->
+        <!-- end left sidebar -->
+        <!-- ============================================================== -->
+        <!-- ============================================================== -->
+        <!-- wrapper  -->
+        <!-- ============================================================== -->
+     <div class="dashboard-wrapper">
+       <div class="dashboard-ecommerce">
+          <div class="container-fluid dashboard-content ">
+                    <!-- ============================================================== -->
+                    <!-- pageheader  -->
+                    <!-- ============================================================== -->
+                   <form class="row g-3 product-form" style="height:450px;overflow: auto;" enctype="multipart/form-data">
+				        <div class="col-md-12">
+				            <h5 style="font-weight: bold;">PRODUCT INFORMATION</h5>
+				        </div>
+				        <div class="col-md-6">
+				            <label class="form-label">Product Name</label>
+				            <input type="text" class="form-control" id="name" name="name" required>
+				        </div>
+				        <div class="col-md-6">
+				            <label class="form-label">Description</label>
+				            <input type="text" class="form-control" id="description" name="description" required>
+				        </div>
+				
+				        <div class="col-md-6">
+				            <label class="form-label">Price</label>
+				            <input type="text" class="form-control" name="price" id="price">
+				
+				        </div>
+				        <div class="col-md-6">
+				            <label class="form-label">Quantity</label>
+				            <input type="number" class="form-control" name="qty" id="qty">
+				
+				        </div>
+				        
+				        <div>
+				            <label class="form-label">Category</label>
+				            <input class="number" id="category" name="category" required>
+				            
+				            
+				            
+				               
+				        </div>
+				
+				         <div class="col-md-12">
+				        <h5 style="font-weight: bold;">UPLOADS</h5>
+				    </div>
+				    <div class="col-md-6">
+				        <label class="form-label">Product Picture</label>
+				        <input type="file" id="imageInput" name="imageInput">
+				    </div>
+				    <input type="button" id="submitBtn" value="Submit" class="btn btn-primary col-md-12 mt-4" onclick="submitForm()">
+				
+				         <div>
+				         
+				         <label class="form-label">Id</label>
+				            <input class="number" id="ident" name="ident" required>
+				        <input type="button" id="editBtn" value="Edit" class="btn btn-primary col-md-12 mt-4" >
+				        
+				            <input type="button" id="delBtn" value="Delete" class="btn btn-primary col-md-12 mt-4" >
+				            </div>
+				</form>
+
+    
+                    
+                   </div>  
+                   
+                    </div>
+                </div>
+            </div>    
+        <!-- ============================================================== -->
+        <!-- end wrapper  -->
+        <!-- ============================================================== -->
+    
+    <!-- ============================================================== -->
+    <!-- end main wrapper  -->
+    <!-- ============================================================== -->
+    <!-- Optional JavaScript -->
+    <!-- jquery 3.3.1 -->
+
+
+<script th:src="@{/assets/vendor/jquery/jquery-3.3.1.min.js}"></script>
+    <!-- bootstap bundle js -->
+    <script th:src="@{/assets/vendor/bootstrap/js/bootstrap.bundle.js}"></script>
+    <!-- slimscroll js -->
+    <script th:src="@{/assets/vendor/slimscroll/jquery.slimscroll.js}"></script>
+    <!-- main js -->
+    <script th:src="@{/assets/libs/js/main-js.js}"></script>
+    <!-- chart chartist js -->
+    <script th:src="@{/assets/vendor/charts/chartist-bundle/chartist.min.js}"></script>
+    <!-- sparkline js -->
+    <script th:src="@{/assets/vendor/charts/sparkline/jquery.sparkline.js}"></script>
+    <!-- morris js -->
+    <script th:src="@{/assets/vendor/charts/morris-bundle/raphael.min.js}"></script>
+    <script th:src="@{/assets/vendor/charts/morris-bundle/morris.js}"></script>
+    <!-- chart c3 js -->
+    <script th:src="@{/assets/vendor/charts/c3charts/c3.min.js}"></script>
+    <script th:src="@{/assets/vendor/charts/c3charts/d3-5.4.0.min.js}"></script>
+    <script th:src="@{/assets/vendor/charts/c3charts/C3chartjs.js}"></script>
+    <script th:src="@{/assets/libs/js/dashboard-ecommerce.js}"></script>
+    <script>
+    function submitForm() {
+        var name = document.getElementById("name").value;
+        var description = document.getElementById("description").value;
+        var price = document.getElementById("price").value;
+        var qty = document.getElementById("qty").value;
+        var category = document.getElementById("category").value;
+        var fileInput = document.getElementById("imageInput").files[0];
+        var fileName = fileInput.name;
+
+        var formData = new FormData();
+        formData.append('name', name);
+        formData.append('description', description);
+        formData.append('price', price);
+        formData.append('qty', qty);
+        formData.append('categoryId', category);
+        formData.append('picture', fileName);
+
+        fetch('/products/create', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.text();
+            } else {
+                throw new Error('Failed to create product');
+            }
+        })
+        .then(message => {
+            alert(message); // Show success message
+            // Optionally redirect or perform other actions after successful submission
+        })
+        .catch(error => {
+            console.error(error);
+            alert('An error occurred');
+        });
+    }
+   </script>
+    
+    </body>
+    </html>

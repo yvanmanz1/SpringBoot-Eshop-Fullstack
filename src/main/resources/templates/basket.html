@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>YM Shop eCommerce</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/favicon.ico}">
+
+    <link rel="stylesheet" th:href="@{/assets/css/bootstrap.min.css}">
+    
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="apple-touch-icon" th:href="@{/assets/img/apple-icon.png}">
+    <link rel="shortcut icon" type="image/x-icon" th:href="@{/assets/img/favicon.ico}">
+
+   
+    <link rel="stylesheet" th:href="@{/assets/css/cart.css}">
+    
+    
+</head>
+
+<body>
+
+
+        <div class="card">
+            <div class="row">
+                <div class="col-md-8 cart" id="cartItems">
+                    <div class="title">
+                        <div class="row">
+                            <div class="col"><h4><b>Shopping Cart</b></h4></div>
+                            <div class="col align-self-center text-right text-muted">Items</div>
+                        </div>
+                    </div>
+                    <div class="row main align-items-center">
+                    <div class="col-2"><img class="img-fluid"></div>
+                    <div class="col">
+                        <div class="row text-muted"></div>
+                        <div class="row"></div>
+                    </div>
+                    <div class="col">
+                        <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
+                    </div>
+                    <div class="col">&euro;  <span class="close">&#10005;</span></div>
+                </div>
+
+
+
+                </div>
+                <div class="col-md-4 summary" id="cartSummary">
+                <div><h5><b>Summary</b></h5></div>
+            <hr>
+            <div class="row">
+                <div class="col" style="padding-left:0;">ITEMS </div>
+                <div class="col text-right">&euro; </div>
+            </div>
+            <form>
+                <p>SHIPPING</p>
+                <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+                <p>GIVE CODE</p>
+                <input id="code" placeholder="Enter your code">
+            </form>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">TOTAL PRICE</div>
+                <div class="col text-right">&euro; </div>
+            </div>
+            <button class="btn">CHECKOUT</button>
+                
+                </div>
+           </div> 
+   </div> 
+   
+   
+
+  <script>
+    // Function to fetch cart content from the backend
+    
+    
+    function getTokenFromLocalStorage() {
+			    return localStorage.getItem('token');
+			}
+    
+    
+    async function fetchCart(userId) {
+        let token = getTokenFromLocalStorage();
+        token = token.trim();
+        const response = await fetch(`/cart/user`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            }
+        });
+        const products = await response.json();
+        
+        // Display cart items
+        displayCartItems(products);
+        // Display cart summary
+        displayCartSummary(products);
+
+        return products; // Expecting an array of products
+    }
+
+
+
+
+    function displayCartItems(products) {
+        const cartItemsContainer = document.getElementById('cartItems');
+        cartItemsContainer.innerHTML = ''; // Clear previous content
+        products.forEach(product => {
+            const itemDiv = document.createElement('div');
+            itemDiv.classList.add('cartItem');
+            itemDiv.innerHTML = `
+                <div class="row main align-items-center">
+                    <div class="col-2"><img class="img-fluid"></div>
+                    <div class="col">
+                        <div class="row text-muted">${product.name}</div>
+                        <div class="row">${product.description}</div>
+                    </div>
+                    <div class="col">
+                        <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
+                    </div>
+                    <div class="col">&euro; ${product.price.toFixed(2)} <span class="close">&#10005;</span></div>
+                </div>
+            `;
+            cartItemsContainer.appendChild(itemDiv);
+        });
+    }
+
+    function displayCartSummary(products) {
+        const cartSummaryContainer = document.getElementById('cartSummary');
+        
+        const summaryDiv = document.createElement('div');
+        summaryDiv.innerHTML = `
+            <div><h5><b>Summary</b></h5></div>
+            <hr>
+            <div class="row">
+                <div class="col" style="padding-left:0;">ITEMS ${products.length}</div>
+                <div class="col text-right">&euro; ${calculateTotalPrice(products).toFixed(2)}</div>
+            </div>
+            <form>
+                <p>SHIPPING</p>
+                <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+                <p>GIVE CODE</p>
+                <input id="code" placeholder="Enter your code">
+            </form>
+            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                <div class="col">TOTAL PRICE</div>
+                <div class="col text-right">&euro; ${calculateTotalPrice(products).toFixed(2)}</div>
+            </div>
+            <button class="btn">CHECKOUT</button>
+        `;
+        cartSummaryContainer.appendChild(summaryDiv);
+    }
+
+
+    // Function to calculate total price of all items in the cart
+    function calculateTotalPrice(products) {
+        return products.reduce((total, product) => total + product.price, 0);
+    }
+
+  </script>
+
+
+</body>
+</html>
