@@ -1,5 +1,8 @@
 package com.example.ecommfullstack.Controllers;
 
+import javax.validation.constraints.Null;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,17 +40,19 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         User user = userService.loginUser(loginRequest.getEmail(), loginRequest.getPassword());
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                                 .body("Login unsuccessful. Please check your credentials.");
+        }
+        
         String token = jwtTokenProvider.createToken(user.getId(), user.getEmail(), user.getRole().name());
         System.out.println(token);
         
-//        JwtResponse response = new JwtResponse(token);
-
         if (user.getRole() == AppUserRole.ADMIN) {
             return ResponseEntity.ok(new JwtResponse(token, "/admin/landing")); 
         } else {
             return ResponseEntity.ok(new JwtResponse(token, "/homepage")); 
         }
-        
     }
 
 }

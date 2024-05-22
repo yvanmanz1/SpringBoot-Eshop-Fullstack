@@ -1,5 +1,7 @@
 package com.example.ecommfullstack.Models;
 
+import java.util.List;
+
 import javax.persistence.*;
 
 @Entity
@@ -11,9 +13,9 @@ public class Order {
     private String details;
     private int quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private List<Product> products;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -34,7 +36,21 @@ public class Order {
 		this.id = id;
 		this.details = details;
 		this.quantity = quantity;
-		this.product = product;
+		
+		this.user = user;
+		this.status = status;
+		this.totalamount = totalamount;
+	}
+	
+	
+
+	public Order(Long id, String details, int quantity, List<Product> products, User user, String status,
+			double totalamount) {
+		super();
+		this.id = id;
+		this.details = details;
+		this.quantity = quantity;
+		this.products = products;
 		this.user = user;
 		this.status = status;
 		this.totalamount = totalamount;
@@ -64,13 +80,7 @@ public class Order {
 		this.quantity = quantity;
 	}
 
-	public Product getProduct() {
-		return product;
-	}
-
-	public void setProduct(Product product) {
-		this.product = product;
-	}
+	
 
 	public User getUser() {
 		return user;
@@ -94,6 +104,14 @@ public class Order {
 
 	public void setTotalamount(double totalamount) {
 		this.totalamount = totalamount;
+	}
+
+	public List<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(List<Product> products) {
+		this.products = products;
 	}
     
     

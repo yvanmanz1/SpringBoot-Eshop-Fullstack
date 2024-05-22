@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.ecommfullstack.Exceptions.ResourceNotFoundException;
 import com.example.ecommfullstack.Models.Order;
+import com.example.ecommfullstack.Models.OrderRequest;
 import com.example.ecommfullstack.Models.Product;
+import com.example.ecommfullstack.Models.ProductRequest;
 import com.example.ecommfullstack.Repository.OrderRepository;
 import com.example.ecommfullstack.Services.OrderService;
 import com.example.ecommfullstack.Services.ProductService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/orders")
@@ -27,7 +30,7 @@ public class OrderController {
 
     @GetMapping("/all")
     public ResponseEntity<List<Order>> getAllOrders() {
-    	List<Order> orders = orderService.getAllOrders();
+    	List<Order> orders = orderRepository.findAll();
         return ResponseEntity.ok(orders);
     }
 
@@ -38,19 +41,27 @@ public class OrderController {
     }
 
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public Order createOrder(@RequestBody OrderRequest orderRequest) {
+        Order order = new Order();
+        order.setTotalamount(orderRequest.getTotalAmount());
+       
+        order.setStatus("NEW");
+        
+        
+
         return orderRepository.save(order);
     }
+
+    
+
     
  //   @PreAuthorize("hasRole('ADMIN')") 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public Order updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found with id: " + id));
-        order.setDetails(orderDetails.getDetails());
-        order.setQuantity(orderDetails.getQuantity());
-        order.setProduct(orderDetails.getProduct());
-        order.setUser(orderDetails.getUser());
+        
+        order.setStatus(orderDetails.getStatus());
         return orderRepository.save(order);
     }
 

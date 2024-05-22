@@ -9,6 +9,7 @@ import com.example.ecommfullstack.Models.Cart;
 import com.example.ecommfullstack.Models.Product;
 import com.example.ecommfullstack.Models.User;
 import com.example.ecommfullstack.Repository.CartRepository;
+import com.example.ecommfullstack.Repository.ProductRepository;
 import com.example.ecommfullstack.Security.JwtTokenProvider;
 
 import java.util.ArrayList;
@@ -30,19 +31,24 @@ public class CartService {
     
     @Autowired
     private ProductService productService;
+    
+    @Autowired
+    private ProductRepository productRepository;
 
     public List<Product> getProductsInCartByUserId(String token) {
-        Long userId = extractUserIdFromToken(token);
+        Long userId = extractUserIdFromToken(token); 
+        System.out.println(userId);// Ensure this method correctly extracts user ID
         Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
             List<Product> products = cart.getProducts();
-            // Fetch product information for each product in the cart
+            // Fetch and enrich product information
             products.forEach(product -> {
                 Product fullProductInfo = productService.getProductById(product.getId());
-                // Update product information in the cart
                 product.setName(fullProductInfo.getName());
                 product.setPrice(fullProductInfo.getPrice());
+                product.setDescription(fullProductInfo.getDescription());
+                
             });
             return products;
         } else {
@@ -51,17 +57,27 @@ public class CartService {
     }
 
 
-//    public Cart addTCart(Long userId, Product product) {
-//        Cart cart = getCartByUserId(userId);
-//        cart.getProducts().add(product);
-//        return cartRepository.save(cart);
-//    }
+    public void removeItemFromCart(Long productId, String token) throws Exception {
+        // Logic to get the user from the token
+        Long userId = extractUserIdFromToken(token);
+        User user = userService.getUserById(userId);
+        Optional<Cart> cartOptional = cartRepository.findByUserId(userId);
 
-//    public Cart removeFromCart(Long userId, Long productId) {
-//        Cart cart = getCartByUserId(userId);
-//        cart.getProducts().removeIf(product -> product.getId().equals(productId));
-//        return cartRepository.save(cart);
-//    }
+        if (!cartOptional.isPresent()) {
+            throw new Exception("Cart not found for user");
+        }
+
+        Cart cart = cartOptional.get();
+        Optional<Product> productOptional = productRepository.findById(productId);
+
+        if (!productOptional.isPresent()) {
+            throw new Exception("Product not found");
+        }
+
+        Product product = productOptional.get();
+        cart.getProducts().remove(product);
+        cartRepository.save(cart);
+    }
     
     
     @Transactional

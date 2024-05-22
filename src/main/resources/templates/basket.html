@@ -36,7 +36,7 @@
                             <div class="col align-self-center text-right text-muted">Items</div>
                         </div>
                     </div>
-                    <div class="row main align-items-center">
+                  <!--   <div class="row main align-items-center">
                     <div class="col-2"><img class="img-fluid"></div>
                     <div class="col">
                         <div class="row text-muted"></div>
@@ -46,14 +46,14 @@
                         <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
                     </div>
                     <div class="col">&euro;  <span class="close">&#10005;</span></div>
-                </div>
+                </div> -->
 
 
 
                 </div>
                 <div class="col-md-4 summary" id="cartSummary">
                 <div><h5><b>Summary</b></h5></div>
-            <hr>
+          <!--    <hr>
             <div class="row">
                 <div class="col" style="padding-left:0;">ITEMS </div>
                 <div class="col text-right">&euro; </div>
@@ -68,7 +68,7 @@
                 <div class="col">TOTAL PRICE</div>
                 <div class="col text-right">&euro; </div>
             </div>
-            <button class="btn">CHECKOUT</button>
+            <button class="btn">CHECKOUT</button> -->
                 
                 </div>
            </div> 
@@ -76,94 +76,181 @@
    
    
 
-  <script>
-    // Function to fetch cart content from the backend
-    
-    
-    function getTokenFromLocalStorage() {
-			    return localStorage.getItem('token');
-			}
-    
-    
-    async function fetchCart(userId) {
-        let token = getTokenFromLocalStorage();
-        token = token.trim();
-        const response = await fetch(`/cart/user`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': token
+ <script>
+        function getTokenFromLocalStorage() {
+            return localStorage.getItem('token');
+        }
+
+        async function fetchCart() {
+            let token = getTokenFromLocalStorage();
+            if (!token) {
+                console.error("No token found in local storage.");
+                return;
             }
-        });
-        const products = await response.json();
+
+            token = token.trim();
+            try {
+                const response = await fetch(`/cart/user`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    console.error("Failed to fetch cart: ", response.statusText);
+                    return;
+                }
+
+                const products = await response.json();
+                console.log("Products fetched: ", products);  
+                displayCartItems(products);
+                displayCartSummary(products);
+            } catch (error) {
+                console.error("Error fetching cart: ", error);
+            }
+        }
+
+        function displayCartItems(products) {
+            const cartItemsContainer = document.getElementById('cartItems');
+            if (!cartItemsContainer) {
+                console.error("Cart items container not found.");
+                return;
+            }
+            cartItemsContainer.innerHTML = '';
+            products.forEach(product => {
+                const itemDiv = document.createElement('div');
+                itemDiv.classList.add('cartItem');
+                itemDiv.innerHTML = `
+                    <div class="row main align-items-center">
+                        <div class="col-2"><img class="img-fluid" src="./asset/images/product-pic.jpg" ></div>
+                        <div class="col">
+                            <div class="row text-muted">${product.name}</div>
+                            <div class="row">${product.description}</div>
+                        </div>
+                        <div class="col">
+                            <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
+                        </div>
+                        <div class="col">&euro; ${product.price.toFixed(2)} <span class="close" data-index="${product.id}">&#10005;</span></div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+           
+            const closeButtons = cartItemsContainer.querySelectorAll('.close');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const productId = event.target.getAttribute('data-index');
+                    removeCartItem(productId);
+                });
+            });
+        }
         
-        // Display cart items
-        displayCartItems(products);
-        // Display cart summary
-        displayCartSummary(products);
+        async function removeCartItem(productId) {
+            let token = getTokenFromLocalStorage();
+            if (!token) {
+                console.error("No token found in local storage.");
+                return;
+            }
 
-        return products; // Expecting an array of products
-    }
+            token = token.trim();
+            try {
+                const response = await fetch(`/cart/remove/${productId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`
+                    }
+                });
 
+                if (!response.ok) {
+                    console.error("Failed to remove item from cart: ", response.statusText);
+                    return;
+                }
 
+                // Refetch the cart items after successful deletion
+                fetchCart();
+            } catch (error) {
+                console.error("Error removing item from cart: ", error);
+            }
+        }
 
-
-    function displayCartItems(products) {
-        const cartItemsContainer = document.getElementById('cartItems');
-        cartItemsContainer.innerHTML = ''; // Clear previous content
-        products.forEach(product => {
-            const itemDiv = document.createElement('div');
-            itemDiv.classList.add('cartItem');
-            itemDiv.innerHTML = `
-                <div class="row main align-items-center">
-                    <div class="col-2"><img class="img-fluid"></div>
-                    <div class="col">
-                        <div class="row text-muted">${product.name}</div>
-                        <div class="row">${product.description}</div>
-                    </div>
-                    <div class="col">
-                        <a href="#">-</a><a href="#" class="border">1</a><a href="#">+</a>
-                    </div>
-                    <div class="col">&euro; ${product.price.toFixed(2)} <span class="close">&#10005;</span></div>
+        function displayCartSummary(products) {
+            const cartSummaryContainer = document.getElementById('cartSummary');
+            if (!cartSummaryContainer) {
+                console.error("Cart summary container not found.");
+                return;
+            }
+            cartSummaryContainer.innerHTML = '';
+            const summaryDiv = document.createElement('div');
+            summaryDiv.innerHTML = `
+                <div><h5><b>Summary</b></h5></div>
+                <hr>
+                <div class="row">
+                    <div class="col" style="padding-left:0;">ITEMS ${products.length}</div>
+                    <div class="col text-right">&euro; ${calculateTotalPrice(products).toFixed(2)}</div>
                 </div>
+                <form>
+                    <p>SHIPPING</p>
+                    <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
+                    <p>GIVE CODE</p>
+                    <input id="code" placeholder="Enter your code">
+                </form>
+                <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
+                    <div class="col">TOTAL PRICE</div>
+                    <div class="col text-right">&euro; ${calculateTotalPrice(products).toFixed(2)}</div>
+                </div>
+                <button class="btn" id="checkoutButton">CHECKOUT</button>
             `;
-            cartItemsContainer.appendChild(itemDiv);
-        });
-    }
+            cartSummaryContainer.appendChild(summaryDiv);
 
-    function displayCartSummary(products) {
-        const cartSummaryContainer = document.getElementById('cartSummary');
+            // Add event listener to the checkout button
+            document.getElementById('checkoutButton').addEventListener('click', function(event) {
+                event.preventDefault();
+                createOrder(products);
+            });
+        }
+
+        function createOrder(products) {
+            const orderData = {
+                products: products.map(product => ({
+                    name: product.name,
+                    price: product.price,
+                    qty: 1, 
+                    description: product.description,
+                    picture: product.picture, 
+                    categoryId: product.categoryId
+                })),
+                totalAmount: calculateTotalPrice(products)
+            };
+
+            fetch('/orders', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(orderData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Order created:', data);
+                
+                var redirectUrl = data.redirectUrl || '/ordered'; //  redirect URL 
+    	        window.location.href = redirectUrl;
+            })
+            .catch(error => {
+                console.error('Error creating order:', error);
+            });
+        }
+
+        function calculateTotalPrice(products) {
+            return products.reduce((total, product) => total + product.price, 0);
+        }
+
         
-        const summaryDiv = document.createElement('div');
-        summaryDiv.innerHTML = `
-            <div><h5><b>Summary</b></h5></div>
-            <hr>
-            <div class="row">
-                <div class="col" style="padding-left:0;">ITEMS ${products.length}</div>
-                <div class="col text-right">&euro; ${calculateTotalPrice(products).toFixed(2)}</div>
-            </div>
-            <form>
-                <p>SHIPPING</p>
-                <select><option class="text-muted">Standard-Delivery- &euro;5.00</option></select>
-                <p>GIVE CODE</p>
-                <input id="code" placeholder="Enter your code">
-            </form>
-            <div class="row" style="border-top: 1px solid rgba(0,0,0,.1); padding: 2vh 0;">
-                <div class="col">TOTAL PRICE</div>
-                <div class="col text-right">&euro; ${calculateTotalPrice(products).toFixed(2)}</div>
-            </div>
-            <button class="btn">CHECKOUT</button>
-        `;
-        cartSummaryContainer.appendChild(summaryDiv);
-    }
-
-
-    // Function to calculate total price of all items in the cart
-    function calculateTotalPrice(products) {
-        return products.reduce((total, product) => total + product.price, 0);
-    }
-
-  </script>
+        fetchCart();
+    </script>
 
 
 </body>

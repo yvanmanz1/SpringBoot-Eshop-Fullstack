@@ -25,6 +25,11 @@ public class MainController {
 		return "authentication";
 	}
 	
+	@GetMapping("/ordered")
+	public String showOrdered(){
+		return "ordered";
+	}
+	
 	@GetMapping("/admin/prod")
 	public String showAdminPage(){
 		return "admin";

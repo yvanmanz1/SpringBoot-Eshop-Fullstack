@@ -37,15 +37,15 @@ public class OrderService {
         
     }
 
-    public Order placeOrder(Long userId, Product product) {
-        User user = userService.getUserById(userId);
-        // Create order logic goes here
-        Order order = new Order();
-        order.setUser(user);
-        order.setProduct(product);
-        order.setStatus(OrderStatus.PENDING.toString()); // Map enum value to string representation
-        return orderRepository.save(order);
-    }
+//    public Order placeOrder(Long userId, Product product) {
+//        User user = userService.getUserById(userId);
+//        // Create order logic goes here
+//        Order order = new Order();
+//        order.setUser(user);
+//        order.setProduct(product);
+//        order.setStatus(OrderStatus.PENDING.toString()); // Map enum value to string representation
+//        return orderRepository.save(order);
+//    }
 
 
 

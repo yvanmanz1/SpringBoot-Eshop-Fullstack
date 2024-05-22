@@ -29,7 +29,8 @@ public class CartController {
     
     
     @GetMapping("/user")
-    public ResponseEntity<?> getProductsInCartByUserId(@RequestHeader(name = "Authorization") String token) {
+    public ResponseEntity<List<Product>> getProductsInCartByUserId(@RequestHeader(name = "Authorization") String token) {
+        System.out.println("Received token: " + token);  // Debug log
         List<Product> productsInCart = cartService.getProductsInCartByUserId(token);
         if (!productsInCart.isEmpty()) {
             return ResponseEntity.ok(productsInCart);
@@ -55,35 +56,15 @@ public class CartController {
         }
     }
 
-//    @PostMapping("/add")
-//    public ResponseEntity<String> addProductToCart(@RequestBody AddToCartRequest addToCartRequest, HttpServletRequest request) {
-//        // Get the JWT token from the request headers
-//        String token = request.getHeader("Authorization").substring(7); // Remove "Bearer " prefix
-//        
-//        // Extract user ID from JWT token
-//        Long userId = tokenProvider.getUserIdFromJWT(token);
-//
-//        // Add the product to the user's cart
-//        cartService.addProductToCart(userId, addToCartRequest.getProductId());
-//
-//        return ResponseEntity.ok("Product added to cart successfully");
-//    
-//    
-//    }
-    
-    
-
-//    @GetMapping("/{userId}")
-//    public Cart getCartByUserId(@PathVariable Long userId) {
-//        return cartService.getCartByUserId(userId);
-//    }
-
-//    
-
-//    @DeleteMapping("/{userId}/remove/{productId}")
-//    public Cart removeFromCart(@PathVariable Long userId, @PathVariable Long productId) {
-//        return cartService.removeFromCart(userId, productId);
-//    }
+    @DeleteMapping("/remove/{productId}")
+    public ResponseEntity<?> removeCartItem(@PathVariable Long productId, @RequestHeader("Authorization") String token) {
+        try {
+            cartService.removeItemFromCart(productId, token);
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error removing item from cart: " + e.getMessage());
+        }
+    }
 
     // Add other endpoints for updating and managing the cart as needed
 }

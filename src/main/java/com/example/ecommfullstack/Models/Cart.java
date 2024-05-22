@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 public class Cart {
-    @Id
+	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -16,6 +16,11 @@ public class Cart {
     private User user;
 
     @ManyToMany
+    @JoinTable(
+        name = "cart_products",
+        joinColumns = @JoinColumn(name = "cart_id"),
+        inverseJoinColumns = @JoinColumn(name = "products_id")
+    )
     private List<Product> products;
     
     
