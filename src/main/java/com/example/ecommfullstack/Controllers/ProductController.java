@@ -52,15 +52,13 @@ public class ProductController {
     public ResponseEntity<Product> createProduct(@ModelAttribute ProductRequest productRequest) {
         try {
             String pictureData = productRequest.getPicture();
-            // Check if pictureData is null or empty
+            
             if (pictureData != null) {
-                // Handle case when image is not uploaded
-                // You can choose to set a default image, or leave it blank depending on your requirement
-                // For now, let's assume we set it to null
+                
                 productRequest.setPicture(pictureData);
             }
 
-            // Your existing code to create the product
+           
             ProductService productService = new ProductService(productRepository, null);
             Product createdProduct = productService.createProductFromJson(productRequest);
 
