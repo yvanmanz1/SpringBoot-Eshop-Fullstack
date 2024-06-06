@@ -66,6 +66,6 @@ public class CartController {
         }
     }
 
-    // Add other endpoints for updating and managing the cart as needed
+    
 }
 
