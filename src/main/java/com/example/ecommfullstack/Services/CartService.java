@@ -37,12 +37,12 @@ public class CartService {
 
     public List<Product> getProductsInCartByUserId(String token) {
         Long userId = extractUserIdFromToken(token); 
-        System.out.println(userId);// Ensure this method correctly extracts user ID
+        System.out.println(userId);
         Optional<Cart> optionalCart = cartRepository.findByUserId(userId);
         if (optionalCart.isPresent()) {
             Cart cart = optionalCart.get();
             List<Product> products = cart.getProducts();
-            // Fetch and enrich product information
+            
             products.forEach(product -> {
                 Product fullProductInfo = productService.getProductById(product.getId());
                 product.setName(fullProductInfo.getName());
@@ -58,7 +58,7 @@ public class CartService {
 
 
     public void removeItemFromCart(Long productId, String token) throws Exception {
-        // Logic to get the user from the token
+        
         Long userId = extractUserIdFromToken(token);
         User user = userService.getUserById(userId);
         Optional<Cart> cartOptional = cartRepository.findByUserId(userId);
@@ -115,8 +115,8 @@ public class CartService {
         try {
             return jwtTokenProvider.getUserIdFromJWT(token);
         } catch (Exception ex) {
-            ex.printStackTrace(); // For demonstration, you can log the exception
-            return null; // Return null or any default value based on your requirement
+            ex.printStackTrace(); 
+            return null; 
         }
     }
 
