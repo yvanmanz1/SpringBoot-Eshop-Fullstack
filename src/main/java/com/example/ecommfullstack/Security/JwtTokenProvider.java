@@ -84,15 +84,13 @@ public class JwtTokenProvider {
                 .getBody();
 
         String subject = claims.getSubject();
-        // Assuming the subject is an email address
-        // You may need to adjust this logic based on your specific use case
+        
         Optional<User> userOptional = userRepository.findByEmail(subject);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             return user.getId();
         } else {
-            // Handle the case where the user with the provided email is not found
-            // For example, log a warning or return null
+
             System.err.println("User not found for email: " + subject);
             return null;
         }
